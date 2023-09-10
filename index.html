@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Price Calculator</title>
+    <title>Product Price Calculator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,35 +22,77 @@
     </style>
 </head>
 <body>
-    <h1>Customer Price Calculator</h1>
+
+    <h1>Saber preu de compra 🚛</h1>
     <div class="calculator">
-        <label for="productPrice">Product Price:</label>
-        <input type="number" id="productPrice" step="0.01" placeholder="Enter product price"><br><br>
+        <label for="taxRate">IVA (%):</label>
+        <input type="number" id="taxRate1" step="0.01" placeholder="Enter tax rate"><br><br>
 
-        <label for="taxRate">Tax Rate (%):</label>
-        <input type="number" id="taxRate" step="0.01" placeholder="Enter tax rate"><br><br>
+        <label for="profitRange">Marge net (%):</label>
+        <input type="number" id="profitRange1" step="0.01" placeholder="Enter profit range"><br><br>
 
-        <label for="profitRange">Profit Range (%):</label>
-        <input type="number" id="profitRange" step="0.01" placeholder="Enter profit range"><br><br>
+        <label for="calculatedCustomerPrice">Preu de venta al public(amb IVA):</label>
+        <input type="number" id="calculatedCustomerPrice1" step="0.01" placeholder="Enter customer price"><br><br>
 
-        <button onclick="calculateCustomerPrice()">Calculate Customer Price</button><br><br>
+        <button onclick="calculateProductPrice1()">CALCULAR ✅ preu de compra</button><br><br>
 
-        <div id="result"></div>
+        <div id="result1"></div>
+    </div>
+
+    <h1>Saber preu de venta 👬</h1>
+    <div class="calculator">
+        <label for="productPrice">Preu de compre sense IVA:</label>
+        <input type="number" id="productPrice2" step="0.01" placeholder="Enter product price"><br><br>
+
+        <label for="taxRate"> IVA(%):</label>
+        <input type="number" id="taxRate2" step="0.01" placeholder="Enter tax rate"><br><br>
+
+        <label for="profitRange">Marge net (%):</label>
+        <input type="number" id="profitRange2" step="0.01" placeholder="Enter profit range"><br><br>
+
+        <button onclick="calculateCustomerPrice2()">CALCULAR ✅ Preu de venta al public(amb IVA)</button><br><br>
+
+        <div id="result2"></div>
     </div>
 
     <script>
-        function calculateCustomerPrice() {
-            const productPrice = parseFloat(document.getElementById("productPrice").value);
-            const taxRate = parseFloat(document.getElementById("taxRate").value);
-            const profitRange = parseFloat(document.getElementById("profitRange").value);
+        function calculateProductPrice1() {
+            const taxRate = parseFloat(document.getElementById("taxRate1").value);
+            const profitRange = parseFloat(document.getElementById("profitRange1").value);
+            const calculatedCustomerPrice = parseFloat(document.getElementById("calculatedCustomerPrice1").value);
 
-            if (isNaN(productPrice) || isNaN(taxRate) || isNaN(profitRange)) {
-                document.getElementById("result").innerHTML = "Please enter valid values.";
+            if (isNaN(taxRate) || isNaN(profitRange) || isNaN(calculatedCustomerPrice)) {
+                document.getElementById("result1").innerHTML = "Please enter valid values.";
                 return;
             }
 
-            // Calculate the tax amount
-            const taxAmount = (productPrice * (1+profitRange/100)*taxRate /100);
+            // Calculate the product price using the provided values
+            const productPrice = calculatedCustomerPrice / (1 + (profitRange/100) + (taxRate/100) * (1 + (profitRange/100)));
+            const profitAmount = (productPrice * (1 + (profitRange/100) )- productPrice);
+            const taxAmount = (productPrice  * (1 + (profitRange/100)) * (taxRate/100));
+
+
+            document.getElementById("result1").innerHTML = `
+                Tax Amount: $${taxAmount.toFixed(2)}<br>
+                Profit Amount: $${profitAmount.toFixed(2)}<br>
+                Product Price: $${productPrice.toFixed(2)}`;
+        }
+    </script>
+
+
+    <script>
+        function calculateCustomerPrice2() {
+            const productPrice = parseFloat(document.getElementById("productPrice2").value);
+            const taxRate = parseFloat(document.getElementById("taxRate2").value);
+            const profitRange = parseFloat(document.getElementById("profitRange2").value);
+
+            if (isNaN(productPrice) || isNaN(taxRate) || isNaN(profitRange)) {
+                document.getElementById("result2").innerHTML = "Please enter valid values.";
+                return;
+            }
+
+            // Calculate the tax amount using the modified formula
+            const taxAmount = (productPrice * (1 + profitRange / 100) * taxRate / 100);
 
             // Calculate the profit amount
             const profitAmount = (productPrice * (profitRange / 100));
@@ -58,12 +100,15 @@
             // Calculate the customer price with taxes
             const customerPriceWithTaxes = productPrice + taxAmount + profitAmount;
 
-            document.getElementById("result").innerHTML = `
+            document.getElementById("result2").innerHTML = `
                 Tax Amount: $${taxAmount.toFixed(2)}<br>
                 Profit Amount: $${profitAmount.toFixed(2)}<br>
                 Customer Price with Taxes: $${customerPriceWithTaxes.toFixed(2)}
             `;
         }
     </script>
+
+
+    
 </body>
 </html>
