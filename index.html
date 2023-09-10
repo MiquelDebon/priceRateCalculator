@@ -19,6 +19,17 @@
             max-width: 400px;
             background-color: #f9f9f9;
         }
+
+        .result1{
+            margin: 0 20%; 
+            color: green;
+            text-align: left;
+        }
+
+
+
+        
+
     </style>
 </head>
 <body>
@@ -36,9 +47,11 @@
 
         <button onclick="calculateProductPrice1()">CALCULAR ✅ preu de compra</button><br><br>
 
-        <div id="result1"></div>
+        <div class="result1" id="result1"></div>
     </div>
 
+    <hr>
+    
     <h1>Saber preu de venta 👬</h1>
     <div class="calculator">
         <label for="productPrice">Preu de compre sense IVA:</label>
@@ -52,8 +65,10 @@
 
         <button onclick="calculateCustomerPrice2()">CALCULAR ✅ Preu de venta al public(amb IVA)</button><br><br>
 
-        <div id="result2"></div>
+        <div class="result1" id="result2"></div>
     </div>
+
+
 
     <script>
         function calculateProductPrice1() {
@@ -73,9 +88,9 @@
 
 
             document.getElementById("result1").innerHTML = `
-                Tax Amount: $${taxAmount.toFixed(2)}<br>
-                Profit Amount: $${profitAmount.toFixed(2)}<br>
-                Product Price: $${productPrice.toFixed(2)}`;
+                Cost IVA.................${taxAmount.toFixed(2)} €<br>
+                Benefici net............${profitAmount.toFixed(2)} €<br>
+                Preu de compra.....${productPrice.toFixed(2)} €`;
         }
     </script>
 
@@ -101,9 +116,9 @@
             const customerPriceWithTaxes = productPrice + taxAmount + profitAmount;
 
             document.getElementById("result2").innerHTML = `
-                Tax Amount: $${taxAmount.toFixed(2)}<br>
-                Profit Amount: $${profitAmount.toFixed(2)}<br>
-                Customer Price with Taxes: $${customerPriceWithTaxes.toFixed(2)}
+                Cost IVA...................... ${taxAmount.toFixed(2)} €<br>
+                Benefici net................. ${profitAmount.toFixed(2)} €<br>
+                Preu venta al públic..... ${customerPriceWithTaxes.toFixed(2)} €
             `;
         }
     </script>
