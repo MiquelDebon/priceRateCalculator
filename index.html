@@ -35,25 +35,32 @@
         
         button {
             margin: 1%;
-            
         }
 
+        input{
+            width: 80px;
+        }
+
+        label{
+            font-size: medium;
+        }
         
 
     </style>
 </head>
 <body>
 
-    <h3>Saber preu de compra 🚛</h3>
+    
     <div class="calculator">
+        <h4>Saber preu de compra 🚛</h4>
         <label for="taxRate">IVA (%):</label>
-        <input type="number" id="taxRate1" step="0.01" placeholder="Enter tax rate"><br><br>
+        <input type="number" id="taxRate1" step="0.01" maxlength="" size="3"  placeholder=""><br><br>
 
         <label for="profitRange">Marge net (%):</label>
-        <input type="number" id="profitRange1" step="0.01" placeholder="Enter profit range"><br><br>
+        <input type="number" id="profitRange1" step="0.01" placeholder=""><br><br>
 
         <label for="calculatedCustomerPrice">Preu de venta al public(amb IVA):</label>
-        <input type="number" id="calculatedCustomerPrice1" step="0.01" placeholder="Enter customer price"><br><br>
+        <input type="number" id="calculatedCustomerPrice1" step="0.01" placeholder=""><br><br>
 
         
 
@@ -66,18 +73,18 @@
         <div class="result1" id="result1"></div>
     </div>
 
-    <hr>
 
-    <h3>Saber preu de venta 👬</h3>
+    
     <div class="calculator">
-        <label for="productPrice">Preu de compre sense IVA:</label>
-        <input type="number" id="productPrice2" step="0.01" placeholder="Enter product price"><br><br>
+        <h4>Saber preu de venta 👬</h4>
+        <label for="productPrice">Preu de compra sense IVA:</label>
+        <input type="number" id="productPrice2" step="0.01" placeholder=""><br><br>
 
         <label for="taxRate"> IVA(%):</label>
-        <input type="number" id="taxRate2" step="0.01" placeholder="Enter tax rate"><br><br>
+        <input type="number" id="taxRate2" step="0.01" placeholder=""><br><br>
 
         <label for="profitRange">Marge net (%):</label>
-        <input type="number" id="profitRange2" step="0.01" placeholder="Enter profit range"><br><br>
+        <input type="number" id="profitRange2" step="0.01" placeholder=""><br><br>
 
         <div class="button-container">
             <button type="button" class="btn btn-success" onclick="calculateCustomerPrice2()">CALCULAR ✅ Preu de venta al public(amb IVA)</button><br><br>
@@ -87,6 +94,26 @@
         <div class="result1" id="result2"></div>
     </div>
 
+    
+    <div class="calculator">
+        <h4>Saber marge de benefici 💰</h4>
+        <label for="preuDeCompra3">Preu de compra:</label>
+        <input type="number" id="preuDeCompra3" step="0.01" placeholder=""><br><br>
+
+        <label for="taxRate3">IVA (%):</label>
+        <input type="number" id="taxRate3" step="0.01" placeholder=""><br><br>
+
+        <label for="preuDeVenta3" >Preu de venta:</label>
+        <input type="number" id="preuDeVenta3" step="0.01" placeholder=""><br><br>
+
+        <div class="button-container">
+            <button  type="button" class="btn btn-success" onclick="calculateProfitRange()">Calcular marge de benefici</button>
+            <button  type="button" class="btn btn-warning" onclick="resetValues()">Reset valors</button><br><br> 
+        </div><br>
+
+
+        <div class="result1" id="result3"></div>
+    </div>
 
 
 
@@ -110,7 +137,7 @@
             document.getElementById("result1").innerHTML = `
                 Cost IVA.................${taxAmount.toFixed(2)} €<br>
                 Benefici net............${profitAmount.toFixed(2)} €<br>
-                Preu de compra.....${productPrice.toFixed(2)} €`;
+                <strong>Preu de compra.....${productPrice.toFixed(2)} € <s/trong>`;
         }
     </script>
 
@@ -138,9 +165,33 @@
             document.getElementById("result2").innerHTML = `
                 Cost IVA...................... ${taxAmount.toFixed(2)} €<br>
                 Benefici net................. ${profitAmount.toFixed(2)} €<br>
-                Preu venta al públic..... ${customerPriceWithTaxes.toFixed(2)} €
+                <strong>Preu venta al públic..... ${customerPriceWithTaxes.toFixed(2)} €</strong>
             `;
         }
+
+        function calculateProfitRange() {
+            const preuDeCompra3 = parseFloat(document.getElementById("preuDeCompra3").value);
+            const taxRate3 = parseFloat(document.getElementById("taxRate3").value);
+            const preuDeVenta3 = parseFloat(document.getElementById("preuDeVenta3").value);
+            
+
+            if (isNaN(preuDeCompra3) || isNaN(taxRate3) || isNaN(preuDeVenta3)) {
+                document.getElementById("result3").innerHTML = "Please enter valid values.";
+                return;
+            }
+            
+            const profitRange = (((preuDeVenta3 /(1+(taxRate3/100))) * 100/preuDeCompra3) /100 -1 ) *100;
+            const profitAmount = (preuDeCompra3 * (profitRange / 100));
+            const taxAmount = (preuDeCompra3 * (1 + profitRange / 100) * taxRate3 / 100);
+            
+
+            document.getElementById("result3").innerHTML = `
+                Cost IVA...................... ${taxAmount.toFixed(2)} €<br>
+                Benefici net................. ${profitAmount.toFixed(2)} €<br>
+                <strong>Marge de benefici.............${profitRange.toFixed(1)} %</strong> <br>
+            `;
+        }
+
 
         function resetValues() {
             document.getElementById("taxRate1").value = "0";
@@ -152,7 +203,14 @@
             document.getElementById("productPrice2").value = "0";
             document.getElementById("profitRange2").value = "0";
             document.getElementById("result2").innerHTML = "";
+
+            document.getElementById("preuDeCompra3").value = "0";
+            document.getElementById("taxRate3").value = "0";
+            document.getElementById("preuDeVenta3").value = "0";
+            document.getElementById("result3").innerHTML = "";
         }
+
+
 
 
     </script>
